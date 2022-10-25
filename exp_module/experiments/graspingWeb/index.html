@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Link to shortcut icon-->
+        <link rel="shortcut icon" href="static/images/logo.ico">
+
+        <!-- Bootstrap CSS and JS -->
+        <link href="static/lib/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="static/lib/css/common.css" rel="stylesheet" />
+    </head>
+
+
+    <header id="header">
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a class="d-flex align-items-center text-dark text-decoration-none">
+                <img src="static/images/logo.png" alt="Lab Logo">
+                <!-- <span class="fs-4">Neural Interfacing Lab</span> -->
+            </a>
+        </div>
+    </header>
+
+
+    <body style="text-align: center;">
+
+        <!-- messages -->
+        <script src="static/lib/js/jquery-3.6.0.min.js"></script>
+        <script src="static/lib/js/bootstrap.min.js"></script>
+        <script src="static/lib/js/bootstrap.bundle.min.js"></script>
+        <script src="static/js/main.js"></script>        
+
+        <div style="padding: 35px;">
+
+
+<!-- Content goes here -->
+
+        <div>
+            <div>
+                <p id="main_text" style="font-size:300%;">
+                    Press the button to begin.
+                </p>
+            </div>
+
+
+            <div id="btn_start">
+                <button onclick="start_exp();" class="btn btn-success btn-lg w-50">
+                    <p style="font-size:200%;">Start</p>
+                </button>
+            </div>
+
+            <div id="btn_exit" style="visibility: hidden;">
+                <button onclick="window.open('', '_self', ''); window.close();" class="btn btn-danger btn-lg w-50">
+                    <p style="font-size:200%;">Close</p>
+                </button>
+            </div>
+
+            <script>
+                var interval = 500; // ms
+                var words = ["The experiment is starting", "Open", "Close", "Open", "Close", "End of experiment"];
+                const time_array = [];
+
+
+                function end_exp() {
+                    $('#main_text').text("End of experiment");
+                    var data = []
+                    for (let index = 0; index < time_array.length-1; index++) {
+                        var obj = {
+                            name: words[index],
+                            timestamp: time_array[index]
+                        };
+                        data.push(obj)
+                    }
+
+                    var jsonData = JSON.stringify(data);
+                    function download(content, fileName, contentType) {
+                        var a = document.createElement("a");
+                        var file = new Blob([content], {type: contentType});
+                        a.href = URL.createObjectURL(file);
+                        a.download = fileName;
+                        a.click();
+                    }
+                    download(jsonData, 'timestamps.json', 'text/plain');
+
+
+                    setTimeout(function exit() {
+                        document.getElementById("btn_exit").style.visibility = "visible";
+                    }, 500);
+                }
+
+
+                function start_exp() {
+                    $('#main_text').text("");
+                    document.getElementById("btn_start").style.visibility = "hidden";
+            
+                    var word_counter = 0;
+                    var expected = Date.now() + interval;
+                    var external = setTimeout(step, interval);
+                    function step() {
+            
+                        if(word_counter == words.length){
+                            clearTimeout(internal);
+                            clearTimeout(external);
+                            end_exp();
+                            return;
+                        }
+            
+                        var dt = Date.now() - expected; // the drift (positive for overshooting)
+                        if (dt > interval) {
+                            // something really bad happened. Maybe the browser (tab) was inactive?
+                            // possibly special handling to avoid futile "catch up" run
+                            console.log("bad move")
+                        }
+            
+                        $('#main_text').text(words[word_counter]);
+                        // Get the computer time at this exact time and save it to time_array
+                        time_array.push(Date.now())
+                        word_counter += 1;
+            
+                        expected += interval;
+                        var internal = setTimeout(step, Math.max(0, interval - dt)); // take into account drift
+                    }
+                }
+
+
+                // Script to prevent the user from navigating back on the browser, it is worth mentioning that:
+                // You can-not actually disable the browser back button. However, you can do magic using your logic 
+                // to prevent the user from navigating back which will create an impression like it is disabled.
+                (function (global) {
+                    if(typeof (global) === "undefined") {
+                        throw new Error("window is undefined");
+                    }
+                    var _hash = "!";
+                    var noBackPlease = function () {
+                        global.location.href += "#";
+                        global.setTimeout(function () {
+                            global.location.href += "!";
+                        }, 50);
+                    };
+                    global.onhashchange = function () {
+                        if (global.location.hash !== _hash) {
+                            global.location.hash = _hash;
+                        }
+                    };
+                    global.onload = function () {
+                        noBackPlease();
+                        // Disables backspace on page except on input fields and textarea..
+                        document.body.onkeydown = function (e) {
+                            var elm = e.target.nodeName.toLowerCase();
+                            if (e.which === 8 && (elm !== 'input' && elm  !== 'textarea')) {
+                                e.preventDefault();
+                            }
+                            // Stopping the event bubbling up the DOM tree...
+                            e.stopPropagation();
+                        };
+                    }
+                })(window);
+            
+            </script>
+        </div>
+    </body>
+</html>

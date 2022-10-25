@@ -1,0 +1,53 @@
+name: 'Grasping Web'
+description: 'Prompts left and right hand grasping movement for 30 trials per hand (using a web interface).'
+id: graspingWeb
+
+# Command that the script will call.
+# if multiple commands must be called (execute multiple scripts, set environment variables) we suggest to create another script that handles this process (.bat, .sh, etc.).
+
+# Note: 
+#   remember to use backslash (\) [on windows] when setting paths, i.e.:
+#       full path:      E:\Projects\trex\exp_module\experiments\you_exp_folder\your_exp_file.ext
+#       relative path:  .\exp_module\experiments\you_exp_folder\your_exp_file.ext
+#   and slash (/) [on Linux] when setting paths, i.e.:
+#       full path:      /home/user/Documents/trex/exp_module/experiments/you_exp_folder/your_exp_file.ext
+#       relative path:  ./exp_module/experiments/you_exp_folder/your_exp_file.ext
+
+command: start E:\projects_main\cont-recording\exp_module\experiments\graspingWeb\index.html
+
+
+# Time-out for the recorder to look for Streams
+# that will be created by the experiment.
+# If time runs out, the program will raise an error
+timeout: 10  # TODO
+
+
+# Streaminfo are all streams that need to be recorded.
+# StreamIDs (could also be stream_name)
+exp_outlet: DBG01
+
+
+# Source_id, name or type. Case insensitive.
+device_inputs:
+  - eeg
+
+
+trigger: False
+
+
+# # Searches for the stream based on type
+# inputs:  # Rename to device inputs? 
+#   - eeg
+#   - markers  # Doesnt have to be here. Can also filter out in experiment to allow both.
+
+# Use source_ids in the first place? = Less ambiguous?
+
+
+# outlet:
+#   streaminfo:
+#     - GraspMarkerStream
+#     - Markers
+#     - 1
+#     - 0
+#     - string
+#     - gms01

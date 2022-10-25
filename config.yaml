@@ -1,0 +1,12 @@
+path:
+  main: default
+  exe: libs/labrecorder/LabRecorderCLI.exe
+  out: output
+log_file: record.log
+
+password: 'qwer'
+debug: True
+
+trigger:
+  sequence: [1, 0, 0, 1, 0, 0, 1]
+  serial_com_name: Prolific PL2303GT

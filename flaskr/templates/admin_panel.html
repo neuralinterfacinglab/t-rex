@@ -1,0 +1,46 @@
+{% extends "./partials/layout.html" %}
+{% block content %}
+
+<!-- Content goes here -->
+<div class="container mt-3">
+    <div class="header p-3 pb-md-4 mx-auto text-center">
+        <h1 class="display-4 fw-normal">{{ title }}</h1>
+        <p class="fs-5 text-muted">One module to rule them all...</p>
+    </div>
+
+    <div class="mb-5">
+        <label for="participantId" class="form-label">Participant ID</label>
+        <input type="text" class="form-control" id="participantId" aria-describedby="participantIdHelpBlock" value="{{ participant }}">
+        <div id="participantIdHelpBlock" class="form-text">
+            Please use only study code here (e.g. kh001) and <b>never</b> use a patient identifier!
+        </div>
+    </div>
+
+    <form id="access_form">
+        <div class="mb-3">
+            <h5>Which experiments do you want to enable for this participant?</h5>
+        </div>
+
+        {% for exp in exp_list %}
+            <div class="form-check bg-light mb-3">
+                {% if exp.checked %}
+                <input class="form-check-input" name="{{ exp.name }}" type="checkbox" id="{{ exp.id }}" checked>
+                {% else %}
+                <input class="form-check-input" name="{{ exp.name }}" type="checkbox" id="{{ exp.id }}" >
+                {% endif %}
+
+                <label class="form-check-label" for="{{ exp.id }}">
+                    {{ exp.name }}
+                </label>
+                <p id="{{ exp.id }}_description"> {{ exp.description }} </p>
+            </div>
+        {% endfor %}
+
+    </form>
+
+    <div class="mt-5">
+        <button id='save_config_btn' type="submit" onclick="define_user_and_access();" class="btn btn-primary">Save changes</button>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,25 @@
+name: 'Bubbles'
+description: 'Move your hand to the bubbles to pop them!'
+id: bubbles
+
+# Command that the script will call.
+# if multiple script to call, create a .bat file or something similar.
+# Note: use backslash (\) [on windows]. 
+#       i.e. relative path: .\exp_module\experiments\you_exp_folder\your_exp_file.ext
+command: python .\exp_module\experiments\Bubbles\bubbles.py
+
+# Time-out for the recorder to look for Streams
+# that will be created by the experiment.
+# If time runs out, the program will raise an error
+timeout: 10
+
+# Streaminfo are all streams that need to be recorded.
+# StreamIDs (can also be stream_name)
+exp_outlet: BUBBLE01
+
+# Source_id, name or type. Case insensitive.
+device_inputs:
+  - LEAPLSL01
+  - eeg
+
+trigger: False

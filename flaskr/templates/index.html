@@ -1,0 +1,128 @@
+{% extends "./partials/layout.html" %}
+{% block content %}
+
+<script>
+    function createCard(title, description, action) {
+        // Creates a card, which is the basic building block
+
+        return '<div class="card text-center mt-3">' +
+            '<h5 class="card-header bg-primary text-white">' + title + '</h5>' +
+            '<div class="card-body">' +
+            '<p class="card-text">' + description + '</p>' +
+            '<a href="#" onclick="' + action + '" class="btn btn-primary">Start</a>' +
+            '</div>' +
+            '</div>';
+    }
+
+    function createCardsFromJson(json) {
+        // Reads in experiments data from JSON file
+
+        // Line below is needed if json data is in string format
+        // let experiments = JSON.parse(json).experiments;
+        let experiments = json.experiments;
+        let cards = [];
+        
+        for (let experiment of experiments) {
+            cards.push(createCard(experiment.name, experiment.description, experiment.action));
+        }
+
+        return cards;
+    }
+
+
+    function createColumn(cards) {
+        // Creates a new column from array of cards
+        // Bootstrap puts columns in rows, so create columns first
+
+        let colHtml = '<div class="col">' +
+            '<div class="card-deck">';
+
+        for (let card of cards) {
+            colHtml += card;
+        }
+
+        colHtml += '</div>' +
+            '</div>';
+
+        return colHtml;
+    }
+
+    function createTwoColumns(cards) {
+        // Split cards into two columns
+        // Nr of columns now hardcoded to 2, may be made user param in future
+
+        let cards1 = [];
+        let cards2 = [];
+        let counter = 0;
+
+        for (let card of cards) {
+            if (counter % 2 == 0) {
+                cards1.push(card);
+            } else {
+                cards2.push(card);
+            }
+            counter++;
+        }
+
+        let col1Html = createColumn(cards1);
+        let col2Html = createColumn(cards2);
+        return [col1Html, col2Html];
+    }
+
+
+    function createRow(columns) {
+        // Creates a new row from array of columns
+        // End result can be places in a div placeholder somewhere
+
+        let rowHtml = '<div class="row">';
+
+        for (let column of columns) {
+            rowHtml += column;
+        }
+
+        rowHtml += '</div>';
+        return rowHtml;
+    }
+
+
+    function createExperiments(rows) {
+        // Creates rows from array and adds admin button at the end
+
+        let experimentsHtml = '<div class="container">';
+
+        for (let row of rows) {          // currently just 1 row anyhow
+            experimentsHtml += row;
+        }
+
+        experimentsHtml += '<p>&nbsp;</p></div>';
+        return experimentsHtml;
+    }
+
+
+    window.onload = function () {
+        $.getJSON("http://localhost:5000/load_exp_grid", function(data){
+
+            let exp_json = data;
+
+            // create experiments UI components
+            let expCards = createCardsFromJson(exp_json);   
+            let expCols = createTwoColumns(expCards);  
+            let expRows = createRow(expCols);
+
+            // load final UI into document
+            document.getElementById('experiments').innerHTML = createExperiments(expRows);
+        });
+    };
+
+</script>
+
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h1 class="display-4 fw-normal">{{ title }}</h1>
+        <p class="fs-5 text-muted">Begin an experiment by clicking on its <span style="color:#0D6EFD; font-weight:bold">Start</span> button.</p>
+        
+    </div>
+
+    <!-- Experiments are dynamically loaded here -->
+    <div id="experiments"></div>
+
+{% endblock content %}

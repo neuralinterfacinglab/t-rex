@@ -1,0 +1,42 @@
+{% extends "./partials/layout.html" %}
+{% block content %}
+
+<!-- Content goes here -->
+<div class="container mt-3">
+    <div class="jumbotron">
+        <h1 id="page_header">Start experiment</h1>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <p>== PLACEHOLDER == <br/>(experiment running or error message)</p>
+</div>
+
+<div class="container">
+    <div class="row mt-5">
+        <p style="text-align: center;">
+            <button type="button" class="btn btn-outline-danger" 
+            data-bs-toggle="modal" data-bs-target="#confirmation">
+                Stop experiment</button>
+        </p>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="confirmation">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to stop the experiment?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="./home" role="button" class="btn btn-danger">Yes, please stop</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

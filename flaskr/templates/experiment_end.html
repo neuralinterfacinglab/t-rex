@@ -1,0 +1,37 @@
+{% extends "./partials/layout.html" %}
+{% block content %}
+
+<!-- Content goes here -->
+<div class="container mt-3">
+    <h2>How did it go?</h2>
+    <div class="row mt-5">
+        <div class="btn-group">
+            <div class="col">
+                <button onclick="exp_went_well();" id="btn_ok" class="btn btn-success btn-lg w-50">
+                    <p><br />All good</p>
+                </button>
+            </div>
+
+            <div class="col">
+                <button onclick="exp_went_bad();" id="btn_bad" class="btn btn-danger btn-lg w-50">
+                    <p><br />Not so good</p>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container">
+        <p>&nbsp;</p>
+    </div>
+
+    <script>
+        $("button").click(function () {
+            $("#actions").show();
+        });
+        $('#header').prop('hidden', true);
+    </script>
+
+</div>
+
+{% endblock content %}

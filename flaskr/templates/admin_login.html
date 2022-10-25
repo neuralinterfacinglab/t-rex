@@ -1,0 +1,32 @@
+{% extends "./partials/layout.html" %}
+{% block content %}
+
+<!-- Content goes here -->
+<div class="header p-3 pb-md-4 mx-auto text-center">
+    <h1 class="display-4 fw-normal">{{ title }}</h1>
+    <p class="fs-5 text-muted">Introduce the password to access the administrator panel.
+        <br>
+        If you entered here by mistake, just press the <a href="/home">Home</a> button in the top right corner.
+
+    </p>
+</div>
+
+<div class="container mt-5">
+    <h2>Enter admin password:</h2>
+    <div class="mb-3">
+        <input type="password" class="form-control" id="adminPassword">
+        <input type="submit" hidden/>
+    </div>
+    <button onclick="check_password();" type="submit" class="btn btn-primary">Submit</button>
+</div>
+
+<script>
+    var input = document.getElementById("adminPassword");
+    input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {  
+        check_password();
+    }
+    });
+</script>
+
+{% endblock content %}

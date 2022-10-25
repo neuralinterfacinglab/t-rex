@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Link to shortcut icon-->
+        <link rel="shortcut icon" href="static/images/favicon.ico">
+
+        <!-- Bootstrap CSS and JS -->
+        <link href="static/lib/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="static/lib/css/common.css" rel="stylesheet" />
+    </head>
+
+
+    <header id="header">
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+                <img src="/static/images/logo.png" alt="Lab Logo">
+            </a>
+            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                <a class="me-3 py-2 text-dark text-decoration-none" href="/home">Home</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" href="/admin_login">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+
+    <body style="text-align: center;">
+
+        <!-- messages -->
+        {% include './partials/messages.html' %}
+
+        <script src="static/lib/js/jquery-3.6.0.min.js"></script>
+        <script src="static/lib/js/bootstrap.min.js"></script>
+        <script src="static/lib/js/bootstrap.bundle.min.js"></script>
+        <script src="static/js/main.js"></script>     
+        <script>
+            // Script to prevent the user from navigating back on the browser, it is worth mentioning that:
+            // You can-not actually disable the browser back button. However, you can do magic using your logic 
+            // to prevent the user from navigating back which will create an impression like it is disabled.
+            (function (global) {
+                if(typeof (global) === "undefined") {
+                    throw new Error("window is undefined");
+                }
+
+                var _hash = "!";
+                var noBackPlease = function () {
+                    global.location.href += "#";
+
+                    // Making sure we have the fruit available for juice (^__^)
+                    global.setTimeout(function () {
+                        global.location.href += "!";
+                    }, 50);
+                };
+
+                global.onhashchange = function () {
+                    if (global.location.hash !== _hash) {
+                        global.location.hash = _hash;
+                    }
+                };
+
+                global.onload = function () {
+                    noBackPlease();
+
+                    // Disables backspace on page except on input fields and textarea..
+                    document.body.onkeydown = function (e) {
+                        var elm = e.target.nodeName.toLowerCase();
+                        if (e.which === 8 && (elm !== 'input' && elm  !== 'textarea')) {
+                            e.preventDefault();
+                        }
+                        // Stopping the event bubbling up the DOM tree...
+                        e.stopPropagation();
+                    };
+                }
+            })(window);
+        </script>
+
+        <div style="padding: 35px;">
+
+            {% block content %}{% endblock %}
+        
+        </div>
+
+
+        <footer class="pt-5 my-5 text-muted border-top">
+            <!-- Created by the <a href="https://neuralinterfacinglab.github.io/people/" target="_blank"> Neural Interfacing Lab </a> team &middot; &copy; 2022 -->
+            Created by the  <b>Neural Interfacing Lab</b> </a> team &middot; &copy; 2022
+        </footer>
+
+    </body>
+
+</html>

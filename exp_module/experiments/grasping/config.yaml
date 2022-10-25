@@ -1,0 +1,26 @@
+name: 'Grasping'
+description: 'Prompts left and right hand grasping movement for 30 trials per hand.'
+id: grasping
+
+# Command that the script will call.
+# if multiple script to call, create a .bat file or something similar.
+# Note: use backslash (\) [on windows]. 
+#       i.e. relative path: .\exp_module\experiments\you_exp_folder\your_exp_file.ext
+# command: .\exp_module\echo.bat
+command: python .\exp_module\experiments\grasping\grasping.py
+# command: .\exp_module\experiments\grasping\grasping.py
+
+# Time-out for the recorder to look for Streams
+# that will be created by the experiment.
+# If time runs out, the program will raise an error
+timeout: 5  # TODO
+
+# Streaminfo are all streams that need to be recorded.
+# StreamIDs (could also be stream_name)
+exp_outlet: emuidw22
+
+# Source_id, name or type. Case insensitive.
+device_inputs:
+  - eeg
+  
+trigger: False
