@@ -16,19 +16,3 @@ participants_list:
     wordsLIS: false
     wordsLISselfpaced: false
   participant_id: kh001
-- participant_access:
-    FollowTheDot: false
-    FollowTheDotWithHand: false
-    PressTheKey: false
-    affectLocalizer: false
-    bubbles: true
-    grasping: true
-    graspingWeb: true
-    sentences: false
-    singleWords: false
-    singleWordsGerman: false
-    vowels: false
-    vowels-selfpaced: false
-    wordsLIS: false
-    wordsLISselfpaced: false
-  participant_id: kh002
