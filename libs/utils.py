@@ -1,5 +1,3 @@
-from ast import main
-import sys
 import yaml
 import logging
 import json
