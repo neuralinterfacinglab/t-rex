@@ -13,7 +13,7 @@ id: graspingWeb
 #       full path:      /home/user/Documents/trex/exp_module/experiments/you_exp_folder/your_exp_file.ext
 #       relative path:  ./exp_module/experiments/you_exp_folder/your_exp_file.ext
 
-command: start E:\projects_main\cont-recording\exp_module\experiments\graspingWeb\index.html
+command: start .\exp_module\experiments\graspingWeb\index.html
 
 
 # Time-out for the recorder to look for Streams
