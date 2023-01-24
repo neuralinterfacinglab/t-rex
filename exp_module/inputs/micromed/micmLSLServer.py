@@ -7,7 +7,7 @@ __date__    = "25.03.2019"
 # Builtin
 import socketserver # Builtin   
 
-# 3th party
+# 3rd party
 import numpy as np 
 from pylsl import StreamInfo, StreamOutlet
 

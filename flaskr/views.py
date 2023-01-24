@@ -3,7 +3,7 @@ from sys import excepthook
 import yaml
 import os
 
-# 3th party
+# 3rd party
 from flask import render_template
 
 # local
