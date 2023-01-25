@@ -34,7 +34,7 @@ class Trigger():
         '''
 
         main_dir = get_main_dir_from_config_file()
-        config = load_data_from_yaml(main_dir/'config.yaml')
+        config = load_data_from_yaml(main_dir/'resources'/'config.yaml')
         
         if not 'trigger' in config:
             msg = 'No trigger header defined in main config.'

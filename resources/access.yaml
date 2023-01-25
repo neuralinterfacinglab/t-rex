@@ -1,0 +1,7 @@
+active_session: kh001
+participants_list:
+- participant_access:
+    bubbles: true
+    grasping: true
+    graspingWeb: true
+  participant_id: kh001

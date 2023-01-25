@@ -82,7 +82,7 @@ class Recorder():
             dict with all config info
         '''
 
-        return utils.load_data_from_yaml(main_dir/'config.yaml')
+        return utils.load_data_from_yaml(main_dir/'resources'/'config.yaml')
 
     def set_output_path(self, ppt_id: str, name: str) -> None:
         '''  Creates the output structure for output

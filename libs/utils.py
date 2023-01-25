@@ -77,7 +77,7 @@ def get_exp_list(main_dir):
     exps_dir = Path(main_dir/'exp_module'/'experiments')
     exps_folders = [f for f in exps_dir.iterdir() if f.is_dir()]
     for exp_name in exps_folders:
-        exp_config = load_data_from_yaml(Path(exp_name/'config.yaml'))
+        exp_config = load_data_from_yaml(Path(exp_name)/'config.yaml')
         exp_data = {
             'name': exp_config.get('name'),
             'description': exp_config.get('description'),
@@ -103,7 +103,7 @@ def get_participants_access_data(main_dir):
 
     """
 
-    access_file = Path(main_dir/'access.yaml')
+    access_file = Path(main_dir)/'resources'/'access.yaml'
     access_data = load_data_from_yaml(access_file)
 
     return access_data
@@ -144,7 +144,7 @@ def update_participants_access_file(main_dir, participant_id, participant_access
     
     p_access_data['participants_list'] = p_access_list
     # get the location of the access file and update the access information
-    access_file = Path(main_dir/'access.yaml')
+    access_file = Path(main_dir)/'resources'/'access.yaml'
     save_data_on_yaml(access_file, p_access_data)
 
 
@@ -156,12 +156,12 @@ def get_active_session(main_dir):
     The user should specify the full path to the directory where the main module is contained.
 
     Arguments:
-        main_dir -- full path to main directory. The 'config.yaml' file should be here.
+        main_dir -- full path to main directory. The 'config.yaml' file should be inside the resources folder.
 
     Returns:
         A string with the 'Participant ID'.
     """
-    access_file = Path(main_dir, 'access.yaml')
+    access_file = Path(main_dir)/'resources'/'access.yaml'
     config_data = load_data_from_yaml(access_file)
     
     return config_data.get('active_session')
@@ -170,14 +170,14 @@ def get_active_session(main_dir):
 def update_active_session(main_dir, active_session):
     """Updates the .yaml file with the active session configuration.
 
-    Updates on the 'config.yaml' the 'active_session' information. This file must be on the root of the 'main_dir'.
+    Updates on the 'config.yaml' the 'active_session' information. This file must be inside './main_dir/resources/'.
 
     Arguments:
-        main_dir -- full path to main directory. The 'config.yaml' file should be here.
+        main_dir -- full path to main directory. The 'config.yaml' file should be inside './main_dir/resources/'.
         active_session -- the active session to update.
     """
     # get the path to the configuration file
-    config_file = Path(main_dir, 'access.yaml')
+    config_file = Path(main_dir)/'resources'/'access.yaml'
     # get the configuration data
     config_data = load_data_from_yaml(config_file)
     # update the active session
@@ -196,7 +196,7 @@ def get_main_dir_from_config_file():
         A string with the path to the main directory of execution.
     """
 
-    config = Path('config.yaml')
+    config = Path('resources')/'config.yaml'
 
     for folder in ['.', '..', '../..']:
         path = folder/config
@@ -223,7 +223,7 @@ def get_active_session_access(main_dir):
 
     Arguments:
         main_dir -- full path to main directory. 
-        The 'config.yaml' and 'access.yaml' files should be here.
+        The 'config.yaml' and 'access.yaml' files should be inside './main_dir/resources/'.
 
     Returns:
         participant_access -- the access data for the active_session.
@@ -270,7 +270,7 @@ def get_pass_from_config_file():
         A string with the password to access the admin panel.
     """
 
-    config = Path('config.yaml')
+    config = Path('resources')/'config.yaml'
 
     for folder in ['.', '..', '../..']:
         path = folder/config
@@ -288,7 +288,7 @@ def get_pass_from_config_file():
 
 ###################### function to get the newest created file from the root of a directory tree ######################
 def get_newest_file_from_dir(dir):
-    config = load_data_from_yaml(dir/'config.yaml')
+    config = load_data_from_yaml(dir/'resources'/'config.yaml')
     paths = config.get('path')
     path_output = Path(paths.get('out'))  # output folder
 

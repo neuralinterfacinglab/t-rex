@@ -15,7 +15,7 @@ class Controller:
         self.main_dir = utils.get_main_dir_from_config_file()
         self.exps = self.get_experiment_dict()
         self.add_sys_paths()
-        self.main_config = utils.load_data_from_yaml(self.main_dir/'config.yaml')
+        self.main_config = utils.load_data_from_yaml(self.main_dir/'resources'/'config.yaml')
 
     def add_sys_paths(self):
         '''
