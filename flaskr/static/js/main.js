@@ -52,9 +52,9 @@ function check_password() {
         success: function (response) {
             console.log("success");
             console.log(response)
-            if (response == 'False') {
+            if (response.ans == 'False') {
                 showMessage("warning", "Wrong password, try again", 2000);
-            } else {
+            } else if (response.ans == 'True') {
                 window.location.href = '/admin_panel';
             }
 
@@ -121,12 +121,12 @@ function start_exp(action) {
         success: function (response) {
             console.log("success");
             console.log(response);
-            window.location.href = response;
+            window.location.href = response.ans;
         },
         error: function (xhr, textStatus, errorThrown) {
             console.log(textStatus);
             showMessage("danger", "Technical Error Found, check system logs and/or the console output", 2000);
-            console.log(xhr.responseText);
+            console.log(xhr.responseText.ans);
         },
 
         complete: function () {

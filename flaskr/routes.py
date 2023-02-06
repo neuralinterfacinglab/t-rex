@@ -2,7 +2,7 @@
 import json
 
 # 3rd party
-from flask import request
+from flask import request, jsonify
 
 # local
 from flaskr import *
@@ -34,7 +34,9 @@ def define_user_and_access():
     # update the active session
     utils.update_active_session(MAIN_DIR, participant_id)
 
-    return '/admin_panel'
+    response = jsonify({'ans': '/admin_panel'})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route("/check_password", methods=['GET'])
@@ -43,9 +45,14 @@ def check_password():
         The password is configured on the main config.yaml file."""
     pwrd = request.args.get('pass')
     if(pwrd == PASSWORD):
-        return 'True'
+        response = jsonify({'ans': 'True'})
     else:
-        return 'False'
+        response = jsonify({'ans': 'False'})
+
+    response.headers.add('Access-Control-Allow-Origin', '*')
+
+    return response
+        
 
 
 @app.route("/exp_went_well", methods=['GET'])
@@ -59,7 +66,9 @@ def exp_went_well():
 
     utils.generate_file_with_session_and_exp_metadata(MAIN_DIR, latest.parent)
 
-    return 'experiment went WELL, thanks for the feedback'
+    response = jsonify({'ans': 'experiment went WELL, thanks for the feedback'})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route("/exp_went_bad", methods=['GET'])
@@ -73,7 +82,9 @@ def exp_went_bad():
     
     utils.generate_file_with_session_and_exp_metadata(MAIN_DIR, latest.parent)
     
-    return 'experiment went BAD, thanks for the feedback'
+    response = jsonify({'ans': 'experiment went BAD, thanks for the feedback'})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route("/start_exp", methods=['GET'])
@@ -90,9 +101,13 @@ def start_exp():
 
     # if there was an error during the execution then stay in the Home view and set the error message
     if(isinstance(status, Exception)):
-        return str(status), 500
+        response = jsonify({'ans': str(status)})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response, 500
     else:
-        return '/experiment_end'
+        response = jsonify({'ans': '/experiment_end'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
 
 
 @app.route('/load_exp_grid', methods=['GET'])
@@ -109,4 +124,7 @@ def load_exp_grid():
             exp['action'] = 'start_exp(\''+ exp.get('id')+ '\');'
             only_exps_with_access_list.append(exp)
 
-    return json.dumps({'experiments': only_exps_with_access_list})
+    response = jsonify({'experiments': only_exps_with_access_list})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+
+    return response
