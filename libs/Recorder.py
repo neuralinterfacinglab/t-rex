@@ -8,6 +8,7 @@ from pylsl import ContinuousResolver
 import libs.utils as utils
 
 
+
 class LabRecorderCLI():
     '''Process based interface for LabRecorder
 
@@ -34,8 +35,10 @@ class LabRecorderCLI():
         self.cmd = cmd
 
     def start_recording(self, filename:str, streams:str) -> None:
-        self.process = Popen(f'{str(self.cmd)} {str(filename)} {str(streams)}',
-                             stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1)   
+
+        self.process = Popen([str(self.cmd), str(filename)] + streams,
+                             stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=-1)
+
         peek =  self.process.stdout.peek()
         if b'matched no stream' in peek:
             raise ConnectionError(peek.decode().strip())
@@ -176,12 +179,11 @@ class Recorder():
 
         self.run_checks()
 
-        search_str = " ".join([f"{k}='{id_}'" for k, id_ in self.ids])
-
-        self.logger.info(f'Recording streams: {search_str}')
+        search_args =  [f"{arg}='{id_}'" for arg, id_ in self.ids]
+        self.logger.info(f'Recording streams: {search_args}')
 
         self.CLI.start_recording(filename=self.full_output_path,
-                                 streams=search_str)
+                                 streams=search_args)
         self.logger.info(f'Started recording to {self.output_filename}')
 
     def stop(self):
