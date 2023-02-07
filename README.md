@@ -144,7 +144,15 @@ conda activate trex
 pip install -r t-rex/resources/requirements.txt
 ```
 
-After completing these steps, **T-Rex** is installed. To start the Web interface, check the [Execution guide](#execution-guide). If you want to try out the included [example experiments](#example-experiments), check [this](#installation-of-the-example-experiments-requirements).
+One of the libraries `pip` installs is `pylsl`, which depends on `liblsl` and is typically installed automatically. However, for some Linux and macOS distributions, it is not included. There is no one-size-fits-all solution for the installation, so we provide instructions on detecting and fixing the problem. If while you execute **T-Rex** following the steps of the [Execution guide](#execution-guide), you encounter an error similar to this:
+
+```shell
+Error while loading shared libraries: liblsl64.so.X.XX.X: cannot open shared object file: No such file or directory
+```
+
+Then you probably need to install `liblsl` manually. If using `conda` [this](https://anaconda.org/conda-forge/liblsl) could be of help or using the [releases](https://github.com/sccn/liblsl/releases).
+
+After completing these steps, **T-Rex** is installed. To start the Web interface, check the [Execution guide](#execution-guide). If you want to try out the included [example experiments](#example-experiments) you must install their [requirements](#installation-of-the-example-experiments-requirements).
 
 ### Installation of the example experiments' requirements
 
@@ -190,6 +198,9 @@ To test **T-Rex** you must:
 - open your browser and check the address ``http://127.0.0.1:5000``
 
 You can run these commands by hand or use the example scripts that we provide where we do all the above. However, you may need to modify these scripts because we make several assumptions. For example, we assume you use a virtual environment called `trex` and [Conda](https://docs.conda.io/en/latest/) to manage them. The good thing is that after modifying the scripts, they can quickly start **T-Rex** on your computer.
+
+For some 
+
 
 ### Start Scripts
 
@@ -263,7 +274,7 @@ chmod +x run_macos.sh
 Once modified, to start **T-Rex**, run the script in the console by typing:
 
 ```shell
-./run_linux.sh
+source run_macos.sh
 ```
 
 ### Testing **T-Rex**
