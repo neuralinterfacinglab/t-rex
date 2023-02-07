@@ -1,4 +1,5 @@
 import os
+import sys
 import datetime as dt
 from subprocess import PIPE, Popen
 from pathlib import Path
@@ -61,7 +62,7 @@ class Recorder():
 
         paths = self.config.get('path')
 
-        self.path_recorder =   Path(paths.get('exe'))
+        self.path_recorder =   self.select_recorder()  # Path(paths.get('exe'))
         self.path_output =     Path(paths.get('out'))  # .xdf output file
         self.output_filename = Path('test.xdf')
         self.output_folder =   None
@@ -70,6 +71,7 @@ class Recorder():
         self.resolver = ContinuousResolver()
 
         self.ids = []
+
 
     def load_config(self, main_dir):
         ''' Loads main config 
@@ -86,6 +88,28 @@ class Recorder():
         '''
 
         return utils.load_data_from_yaml(main_dir/'resources'/'config.yaml')
+    
+    def select_recorder(self):
+        ''' Adds multiple stream_ids to the list
+            to record.
+
+        Args
+        ----------
+
+        Returns
+        ----------
+        labrecorderCLI_path: Path
+            path to the OS compatible labrecorderCLI.
+        '''
+
+        path = Path('./libs/labrecorder/')
+        
+        if sys.platform == 'darwin':
+            return path/Path('./macos/LabRecorderCLI')
+        elif sys.platform == 'win32':
+            return  path/Path('./windows/LabRecorderCLI.exe')
+
+        raise FileNotFoundError('Cannot find path to LabRecorderCLI')
 
     def set_output_path(self, ppt_id: str, name: str) -> None:
         '''  Creates the output structure for output

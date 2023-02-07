@@ -26,3 +26,4 @@ build/
 
 manuscript/*
 debug.py
+tmp/

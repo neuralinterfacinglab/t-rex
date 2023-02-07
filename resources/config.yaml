@@ -1,6 +1,5 @@
 path:
   main: default
-  exe: libs/labrecorder/LabRecorderCLI.exe
   out: output
 log_file: record.log
 
