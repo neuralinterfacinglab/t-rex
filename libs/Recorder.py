@@ -108,10 +108,9 @@ class Recorder():
         platform = sys.platform() if callable(sys.platform) else sys.platform
         platform = platform.lower()
 
-        if platform in ['win32', 'win64', 'windows']:
+        if platform in ['win32', 'win64', 'windows', 'linux']:
 
             return  path/Path('./windows/LabRecorderCLI.exe')
-
 
         if platform == 'darwin':
 
