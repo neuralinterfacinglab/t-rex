@@ -1,7 +1,8 @@
 import os
 import sys
 import datetime as dt
-from subprocess import PIPE, Popen
+from subprocess import PIPE, Popen, check_output
+
 from pathlib import Path
 
 from pylsl import ContinuousResolver
@@ -104,10 +105,23 @@ class Recorder():
 
         path = Path('./libs/labrecorder/')
         
-        if sys.platform == 'darwin':
-            return path/Path('./macos/LabRecorderCLI')
-        elif sys.platform == 'win32':
+        platform = sys.platform() if callable(sys.platform) else sys.platform
+        platform = platform.lower()
+
+        if platform in ['win32', 'win64', 'windows']:
+
             return  path/Path('./windows/LabRecorderCLI.exe')
+
+
+        if platform == 'darwin':
+
+            processor = check_output(['sysctl', '-n', 'machdep.cpu.brand_string']).lower()
+
+            if 'm1' in processor:
+                return path/Path('./macos/LabRecorderCLI_m1')
+
+            elif 'm2' in processor:
+                return path/Path('./macos/LabRecorderCLI_m2')
 
         raise FileNotFoundError('Cannot find path to LabRecorderCLI')
 
