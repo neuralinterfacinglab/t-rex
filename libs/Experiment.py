@@ -12,7 +12,7 @@ from libs.Recorder import Recorder
 from libs.Trigger import Trigger
 
 
-class  Experiment:
+class Experiment:
     ''' Handles start, record and stopping of all LabStreamingLayer
         streams and devices required for a single experiment. '''
 
@@ -182,6 +182,12 @@ class  Experiment:
         '''
 
         self.rec = Recorder(self.logger)
+
+
+        if self.config['trigger']:
+            trigger_stream = self.trig.outlet.get_info().source_id()
+            self.input_ids += [trigger_stream]
+
         self.rec.add_streams_by_id(self.input_ids)
         self.rec.set_output_path(self.ppt_id, self.name)
 
@@ -199,22 +205,8 @@ class  Experiment:
         self.trig = Trigger(self.config['trigger'], logger=self.logger)
 
         if self.trig.is_active:
-            self.trig.connect_to_port()
+            # self.trig.connect_to_port()
             self.trig.setup_lsl()
-
-    def setup(self):
-        ''' Calls all separate components to setup
-
-        Args
-        ----------
-
-        Returns
-        ----------
-        '''
-
-        self.get_device_input_source_ids()
-        self.setup_recorder()
-        self.setup_trigger()
 
     def experiment_is_running(self):
         ''' Checks if and experiment process is
@@ -260,6 +252,20 @@ class  Experiment:
             raise Exception(msg)
 
         return p
+    
+    def setup(self):
+        ''' Calls all separate components to setup
+
+        Args
+        ----------
+
+        Returns
+        ----------
+        '''
+
+        self.get_device_input_source_ids()
+        self.setup_trigger()
+        self.setup_recorder()
 
     def start(self):
         ''' Starts the experiment UI and looks for the stream on a timeout. 

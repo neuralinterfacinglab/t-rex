@@ -141,17 +141,21 @@ class Trigger():
         if not seq:
             seq = self.sequence
 
-        try:
-            self.outlet.push_sample([f'Sending trigger sequence: {seq}'])
-            for i, bit in enumerate(seq):
+        # seq = bytearray(seq)
+
+        self.outlet.push_sample([f'Sending trigger sequence: {seq}'])
+
+        for i, bit in enumerate(seq):
+            try:
+                self.port.write(bytes([bit]))
                 self.outlet.push_sample([f'{i}-{bit}'])
-                self.port.dtr = bit
-                sleep(1/fs)
-            self.logger.info('Trigger sent')
-        except Exception:
-            msg = f'Trigger failed sending sequence: {self.sequence} to {self.serial_com_name}'
-            self.logger.error(msg)
-            raise Exception(msg)
+            finally:
+                # self.port.write(b'0')
+                self.port.write(bytes([0]))
+
+            sleep(1/fs)
+
+        self.outlet.push_sample([f'Finished sending sequence: {seq}'])
     
     def close(self):
         ''' Closes port
