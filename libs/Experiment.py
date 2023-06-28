@@ -1,6 +1,8 @@
 import subprocess
+from itertools import product
 from logging import captureWarnings, exception
 from time import perf_counter as time
+
 
 from pylsl import StreamInfo, StreamOutlet
 from pylsl import resolve_streams
@@ -100,15 +102,17 @@ class Experiment:
             self.logger.error(msg)
             raise Exception(msg)
         
-        if devices == None:
-            msg = "No list provided under device_inputs in experiment config."
+
+        if (devices != None) and (not isinstance(devices, list)):
+            msg = "Wrong datatype under device_inputs. Options: None, [], [device, ...]"
             self.logger.error(msg)
             raise Exception(msg)
 
-        if not isinstance(devices, list):
-            devices = [devices]
+        if devices == None or len(devices) == 0:
+            return []
 
-        devices = [str(d) for d in devices]
+        else:
+            devices = [str(d) for d in devices]
 
         return devices
 
@@ -142,18 +146,19 @@ class Experiment:
         devices = self.get_devices_list()
         current_streams = resolve_streams()
 
-        if not current_streams:
-            msg = f"Cant find any devices. No streams available. Listed devices: {devices}"
+        if not current_streams and len(devices) > 0:
+            msg = f'No streams available, cannot connect to {devices}'
             self.logger.error(msg)
             raise Exception(msg)
 
+
         for device in devices:
 
-            for stream in current_streams: 
-
-                has_match = has_attr(device.lower(), stream)
-
-                if any(has_match):
+            for stream in current_streams:
+            
+                has_match = any(has_attr(device.lower(), stream))
+                print(has_match)
+                if has_match:
 
                     if stream.source_id() in self.input_ids:
                         msg = f'Stream <id: {stream.source_id()}, name: {stream.name()}, type: {stream.type()}> already in list to record. Skipping... Listed stream ids: {self.input_ids}'
@@ -161,12 +166,14 @@ class Experiment:
 
                     self.input_ids += [stream.source_id()]
                     break
-
-            if not any(has_match):
+            
+            if has_match:
+                continue
+            else:
                 missing_streams += [device]
-
+                                        
         if missing_streams:
-            msg = f'No stream exists with source_id, name or type for devices: {[f"<{d}>" for d in missing_streams]}'
+            msg = f'No stream exists with source_id, name or type for devices: {[f"{d}" for d in missing_streams]}'
             self.logger.error(msg)
             raise Exception(msg)
 
