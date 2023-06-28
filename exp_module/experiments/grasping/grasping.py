@@ -1,15 +1,20 @@
-import tkinter as  tk
-from pylsl import StreamInfo, StreamOutlet
 import csv, random
+
+import tkinter as  tk
+import numpy as np
+from pylsl import StreamInfo, StreamOutlet
 
 
 EXP_END = 'End of experiment'
 EXP_PRESS_TO_START = 'Press <spacebar> to begin'
 
+CLASSES = ['Links', 'Rechts']
+TRIALS_PER_CLASS = 30
+
 class singleWordsGui:
-    numTrials = 5
+    numTrials = len(CLASSES) * TRIALS_PER_CLASS
     durationWords= 3
-    durationCross= 0 
+    durationCross= 1
 
     def __init__(self, master, words):
         self.root = master
@@ -19,9 +24,9 @@ class singleWordsGui:
         self.width = self.root.winfo_screenwidth() * 2 / 3
         self.height =self.root.winfo_screenheight() * 2 / 3
         self.root.geometry('%dx%d+0+0' % (self.width, self.height))
-        self.root.title("Single Words")
+        self.root.title("Grasping")
         #Initialize LSL
-        info = StreamInfo('SingleWordsMarkerStream', 'Markers', 1, 0, 'string', 'emuidw22')
+        info = StreamInfo('GraspingStream', 'Markers', 1, 0, 'string', 'emuidw22')
         # next make an outlet
         self.outlet = StreamOutlet(info)
 
@@ -53,8 +58,9 @@ class singleWordsGui:
             self.root.update_idletasks()
             self.root.after(self.durationWords * 1000)
             self.outlet.push_sample(['end;' +  word])
-            self.root.after(self.durationCross * 1000, self.trial)
+            self.lblVar.set('+')
             self.root.update_idletasks()
+            self.root.after(self.durationCross * 1000, self.trial)
 
     def end(self):
         self.outlet.push_sample(['experimentEnded'])
@@ -69,13 +75,14 @@ def getWords(filename):
 
 def genWords(words, times, filename):
     words_to_write = words * times
+    np.random.shuffle(words_to_write)
     with open(filename, 'w') as f:
         for word in words_to_write:
             f.write(word + '\n')
 
 def start():
-    filename = 'exp_module\\experiments\\grasping\\wordsOpenClose.txt'
-    genWords(['Open', 'Close'], 2, filename)
+    filename = 'exp_module\\experiments\\grasping\\trial_words.txt'
+    genWords(CLASSES, TRIALS_PER_CLASS, filename)
     words = getWords(filename)
     root = tk.Tk()
     my_gui = singleWordsGui(root,words)

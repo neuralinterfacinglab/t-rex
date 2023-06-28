@@ -4,9 +4,12 @@ __pycache__/
 */*/__pycache__
 */utils/test_output/*.xdf
 _archive
-/exp_module/output/*
+
 /participants/*
 /output/*
+./exp_module/experiments/*/config.yaml
+
+./resources/
 
 *.pyc
 __pycache__/
@@ -29,3 +32,8 @@ debug.py
 tmp/
 
 run_controller.py
+
+exp_module/experiments/*
+!exp_module/experiments/grasping
+!exp_module/experiments/graspingWeb
+!exp_module/experiments/Bubbles

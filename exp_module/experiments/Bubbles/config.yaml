@@ -20,6 +20,5 @@ exp_outlet: BUBBLE01
 # Source_id, name or type. Case insensitive.
 device_inputs:
   - LEAPLSL01
-  - eeg
 
-trigger: False
+trigger: True

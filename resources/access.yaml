@@ -1,7 +1,44 @@
-active_session: kh001
+active_session: mumc1
 participants_list:
 - participant_access:
+    FollowTheDot: false
+    FollowTheDotWithHand: false
+    SingleWords: false
+    affectLocalizer: false
     bubbles: true
+    economicdecisionmaking: false
     grasping: true
     graspingWeb: true
+    memory: false
+    pressTheKey: false
+    sentences: false
+    sentences_mf: false
+    sentences_sentiment: false
+    shadowing_speech: false
+    sound_perception: false
+    timeflux: false
+    video: false
+    vowels: false
+    wordsLIS: false
   participant_id: kh001
+- participant_access:
+    FollowTheDot: false
+    FollowTheDotWithHand: false
+    SingleWords: false
+    affectLocalizer: false
+    bubbles: true
+    economicdecisionmaking: true
+    grasping: true
+    graspingWeb: false
+    memory: true
+    pressTheKey: false
+    sentences: true
+    sentences_mf: false
+    sentences_sentiment: false
+    shadowing_speech: false
+    sound_perception: false
+    timeflux: false
+    video: false
+    vowels: false
+    wordsLIS: false
+  participant_id: mumc1

@@ -20,7 +20,6 @@ timeout: 5  # TODO
 exp_outlet: emuidw22
 
 # Source_id, name or type. Case insensitive.
-device_inputs:
-  - eeg
+device_inputs: []
   
-trigger: False
+trigger: True

@@ -4,8 +4,12 @@ path:
 log_file: record.log
 
 password: 'qwer'
-debug: True
+debug: False
 
 trigger:
-  sequence: [1, 0, 0, 1, 0, 0, 1]
-  serial_com_name: Prolific PL2303GT
+  # sequence: [255, 0, 0, 255, 0, 0, 255]
+  sequence: [3, 0, 0, 3, 0, 0, 3]
+  # sequence: [4, 0, 0, 4, 0, 0, 4]
+
+  # serial_com_name: Prolific PL2303GT
+  serial_com_name: USB Serial Device
