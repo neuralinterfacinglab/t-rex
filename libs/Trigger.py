@@ -71,6 +71,9 @@ class Trigger():
         if not self.port.is_open:
             self.port.open()
 
+        if self.logger:
+            self.logger.info(f'Connected to trigger device: {port_info.device}')
+
 
     def get_port_by_attr(self, attr, value):
         ''' Search for port based on key value pairs
@@ -114,6 +117,9 @@ class Trigger():
 
         info = StreamInfo(*info)
         self.outlet = StreamOutlet(info)
+        
+        if self.logger:
+            self.logger.info(f'Successful setup TriggerLSL stream: {info}')
 
     def send(self, seq=[], fs=10):
         ''' Send a sequence to trigger and to
@@ -143,6 +149,8 @@ class Trigger():
             seq = self.sequence
 
         # seq = bytearray(seq)
+        if self.logger: 
+            self.logger.info('Sending trigger sequence | Start')
 
         self.outlet.push_sample([f'Sending trigger sequence: {seq}'])
 
@@ -157,6 +165,9 @@ class Trigger():
             sleep(1/fs)
 
         self.outlet.push_sample([f'Finished sending sequence: {seq}'])
+
+        if self.logger: 
+            self.logger.info('Sending trigger sequence | End')
     
     def close(self):
         ''' Closes port
@@ -170,6 +181,9 @@ class Trigger():
         if self.port.is_open:
             self.port.close()
 
+        if self.logger:
+            self.logger.info(f'Closed port')
+
 
 def go():
     ''' Main entry point to setup, run and
@@ -181,7 +195,8 @@ def go():
         Returns
         ----------
         '''
-    t = Trigger(is_active=True)
+    import logging
+    t = Trigger(is_active=True, logger=logging)
     t.connect_to_port()
     t.setup_lsl()
     t.send(fs=5)
