@@ -71,6 +71,7 @@ class Trigger():
         if not self.port.is_open:
             self.port.open()
 
+
     def get_port_by_attr(self, attr, value):
         ''' Search for port based on key value pairs
 
@@ -180,7 +181,7 @@ def go():
         Returns
         ----------
         '''
-    t = Trigger()
+    t = Trigger(is_active=True)
     t.connect_to_port()
     t.setup_lsl()
     t.send(fs=5)

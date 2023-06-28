@@ -210,6 +210,7 @@ class Experiment:
         '''
 
         self.trig = Trigger(self.config['trigger'], logger=self.logger)
+        self.trig.connect_to_port()
 
         if self.trig.is_active:
             # self.trig.connect_to_port()
