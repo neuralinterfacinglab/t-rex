@@ -1,12 +1,8 @@
 import subprocess
-from itertools import product
-from logging import captureWarnings, exception
-from time import perf_counter as time
-
+from time import perf_counter as time, sleep
 
 from pylsl import StreamInfo, StreamOutlet
 from pylsl import resolve_streams
-from pylsl import resolve_byprop
 from pylsl import ContinuousResolver
 
 import libs.utils as utils
@@ -190,7 +186,6 @@ class Experiment:
 
         self.rec = Recorder(self.logger)
 
-
         if self.config['trigger']:
             trigger_stream = self.trig.outlet.get_info().source_id()
             self.input_ids += [trigger_stream]
@@ -210,10 +205,9 @@ class Experiment:
         '''
 
         self.trig = Trigger(self.config['trigger'], logger=self.logger)
-        self.trig.connect_to_port()
 
         if self.trig.is_active:
-            # self.trig.connect_to_port()
+            self.trig.connect_to_port()
             self.trig.setup_lsl()
 
     def experiment_is_running(self):
@@ -324,6 +318,7 @@ class Experiment:
 
         # Send trigger once recording has started
         if self.trig.is_active:
+            sleep(.05)
             self.trig.send()
 
     def stop(self):
@@ -338,6 +333,7 @@ class Experiment:
 
         if self.trig.is_active:
             self.trig.send()
+            sleep(.2)
             self.trig.close()
 
         self.logger.info(f'Experiment <{self.name}> finished , stopping recorder...')

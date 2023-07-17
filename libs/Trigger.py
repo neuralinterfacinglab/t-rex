@@ -199,7 +199,7 @@ def go():
     t = Trigger(is_active=True, logger=logging)
     t.connect_to_port()
     t.setup_lsl()
-    t.send(fs=5)
+    t.send(fs=10)
     t.close()
 
 
